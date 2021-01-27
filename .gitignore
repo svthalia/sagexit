@@ -1,0 +1,14 @@
+__pycache__/
+*.py[cod]
+.idea/
+.vscode/
+*.css
+*.map
+db.sqlite3
+.envrc
+.env
+*.DS_Store
+.coverage
+website/media/
+website/static/
+*.pem

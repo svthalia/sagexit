@@ -1,0 +1,71 @@
+{% load static sass_tags bootstrap4 %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>
+        {% block title %}Mercator reservations{% endblock %}
+    </title>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="{% sass_src 'scss/main.scss' %}" type="text/css">
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/icon.png' %}"/>
+
+    <!-- build commit: {{ COMMIT_HASH }} -->
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <div class="container">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li>
+                    <a href="/" target="_self" class="navbar-brand font-weight-bold nav-link">
+                        Reservations
+                    </a>
+                </li>
+                {% if request.user.is_staff %}
+                    <li>
+                        <a href="{% url "admin:index" %}" target="_self" class="nav-link">
+                            Go to admin
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav my-2 my-lg-0">
+                <li class="nav-item">
+                    {% if not request.user.is_authenticated %}
+                        <a href="{% url 'login' %}" class="nav-link">
+                            <i class="fab fa-openid"></i> Login with Science OpenID
+                        </a>
+                    {% else %}
+                        <a class="nav-link" href="{%  url 'logout' %}?next={{ request.path | urlencode }}">You're logged in as {{ request.user }} - Logout</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container pt-4">
+    {% if messages %}
+        {% for message in messages %}
+            {% bootstrap_alert message alert_type=message.extra_tags dismissible=True %}
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}
+    {% endblock %}
+</div>
+
+<script src="{% static 'js/jquery-3.5.1.slim.min.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+{% block js %}{% endblock %}
+</body>
+</html>

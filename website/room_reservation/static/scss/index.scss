@@ -1,0 +1,47 @@
+@import "fullcalendar/core/main.scss";
+@import "fullcalendar/daygrid/main.scss";
+@import "fullcalendar/timegrid/main.scss";
+@import "fullcalendar/bootstrap/main.scss";
+
+#external-events .fc-event.draggable {
+  cursor: pointer;
+}
+
+#external-events .fc-event {
+  margin: 10px;
+  padding: 10px 8px;
+}
+
+#notifications {
+  position: absolute;
+  z-index: 100;
+  right: 0;
+  color: white;
+  max-width: 50%;
+
+  .notification {
+    max-width: 500px;
+    border-radius: 5px;
+    @media(min-width: 800px) {
+      margin-right: 20px;
+    }
+    margin-right: 5px;
+    padding: 10px 17px 10px 5px;
+    background: rgba($primary, .8);
+    margin-bottom: 5px;
+    transition: .3s;
+    overflow: auto;
+    p {
+      float: left;
+      margin-bottom: 0;
+      // Make the text the same size as the buttons
+      @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-line-height, $btn-border-radius);
+    }
+  }
+  .notification-collapsed {
+    height: 0;
+  }
+  .notification:hover {
+    background: rgba($primary, 1);
+  }
+}

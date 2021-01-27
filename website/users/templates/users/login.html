@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+    <h2>Login</h2>
+    <p>
+        Logging into this service requires a
+        <a href="https://wiki.cncz.science.ru.nl/index.php?title=Nieuwe_studenten&setlang=en">Science account</a>.
+    </p>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form }}
+        <input type="hidden" name="next" value="{{ request.GET.next }}"/>
+        <br>
+        <input type="submit" value="Log in" class="btn btn-primary"/>
+    </form>
+{% endblock %}

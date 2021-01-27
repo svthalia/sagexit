@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "sagexit"
+version = "1.0.0"
+description = "A simple application for reservations"
+authors = ["Job Doesburg <job.doesburg@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "^3.0"
+requests = "^2.22"
+libsass = "^0.20"
+django-compressor = "^2.3"
+django-sass-processor = "^0.8"
+django-bootstrap4 = "^2.3"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
