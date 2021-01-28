@@ -25,9 +25,7 @@ def get_openid_verifier(request):
 
 
 class OpenIDVerifier:
-    def __init__(
-        self, openid_server_endpoint, request, openid_return_url, prefix, postfix
-    ):
+    def __init__(self, openid_server_endpoint, request, openid_return_url, prefix, postfix):
         self.openid_server_endpoint = openid_server_endpoint
         self.openid_trust_root = request.META["HTTP_HOST"]
         self.openid_return_url = openid_return_url
@@ -39,9 +37,9 @@ class OpenIDVerifier:
         if "openid.signed" in self.query_parameters.keys():
             for field in self.query_parameters["openid.signed"].split(","):
                 if field != "mode":
-                    self.signed_field_values[
+                    self.signed_field_values["openid.{}".format(field)] = self.query_parameters[
                         "openid.{}".format(field)
-                    ] = self.query_parameters["openid.{}".format(field)]
+                    ]
 
     def get_request_url(self, username):
         parameters = {
@@ -107,10 +105,7 @@ class OpenIDVerifier:
     def verify_signature(self):
         verification_url = self.get_verification_url()
         response = requests.get(verification_url)
-        return (
-            response.status_code == 200
-            and re.sub("is_valid:", "", re.sub("\n", "", response.text)) == "true"
-        )
+        return response.status_code == 200 and re.sub("is_valid:", "", re.sub("\n", "", response.text)) == "true"
 
     def set_user_details(self, user):
         full_name = self.extract_full_name()
@@ -129,9 +124,7 @@ class OpenIDVerifier:
         if self.verify_request():
             username = self.extract_username()
             if username:
-                user, created = get_user_model().objects.get_or_create(
-                    username=username
-                )
+                user, created = get_user_model().objects.get_or_create(username=username)
                 if created:
                     self.set_user_details(user)
                 return user, created

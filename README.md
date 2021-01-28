@@ -24,3 +24,18 @@ It features:
   of the one of https://github.com/KiOui/TOSTI.
 - a `room_reservations` app that is a plain copy of the one on https://github.com/GipHouse/Website to 
   do the actual reservations.
+- the CI/CD is copied from https://github.com/GipHouse/Website as well. It requires these secrets:
+  - `SSH_USER`
+  - `SSH_PRIVATE_KEY`
+  - `POSTGRES_USER`
+  - `POSTGRES_PASSWORD`
+  - `POSTGRES_NAME`
+  - `DJANGO_SECRET_KEY`
+  - `DJANGO_OPENID_SUPERUSER_USERNAME`
+  
+
+# Set up server
+1. `sudo apt install docker-compose`
+2. `sudo systemctl enable docker`
+3. `sudo usermod -aG docker ubuntu`
+4. Run the deployment workflow

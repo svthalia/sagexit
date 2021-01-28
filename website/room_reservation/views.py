@@ -34,12 +34,7 @@ class BaseReservationView(View):
         if start_time >= end_time:
             return False, "Start time needs to be before end time"
 
-        if (
-            start_time.hour < 8
-            or start_time.hour >= 18
-            or end_time.hour < 8
-            or end_time.hour > 18
-        ):
+        if start_time.hour < 8 or start_time.hour >= 18 or end_time.hour < 8 or end_time.hour > 18:
             return False, "Please enter times between 8:00 and 18:00"
 
         if start_time.weekday() in (5, 6):
@@ -127,9 +122,7 @@ class CreateReservationView(LoginRequiredMixin, BaseReservationView):
         try:
             room, start_time, end_time = self.load_json()
         except (KeyError, JSONDecodeError):
-            return HttpResponseBadRequest(
-                json.dumps({"ok": "False", "message": "Bad request"})
-            )
+            return HttpResponseBadRequest(json.dumps({"ok": "False", "message": "Bad request"}))
 
         ok, message = self.validate(room, start_time, end_time)
         if not ok:
@@ -154,21 +147,15 @@ class UpdateReservationView(LoginRequiredMixin, BaseReservationView):
         try:
             room, start_time, end_time = self.load_json()
         except (KeyError, JSONDecodeError):
-            return HttpResponseBadRequest(
-                json.dumps({"ok": "False", "message": "Bad request"})
-            )
+            return HttpResponseBadRequest(json.dumps({"ok": "False", "message": "Bad request"}))
 
         try:
             reservation = Reservation.objects.get(pk=pk)
         except Reservation.DoesNotExist:
-            return JsonResponse(
-                {"ok": False, "message": "This reservation does not exist"}
-            )
+            return JsonResponse({"ok": False, "message": "This reservation does not exist"})
 
         if not self.can_edit(reservation):
-            return JsonResponse(
-                {"ok": False, "message": "You can only update your own events"}
-            )
+            return JsonResponse({"ok": False, "message": "You can only update your own events"})
 
         ok, message = self.validate(room, start_time, end_time, pk=pk)
         if not ok:
@@ -190,14 +177,10 @@ class DeleteReservationView(LoginRequiredMixin, BaseReservationView):
         try:
             reservation = Reservation.objects.get(pk=pk)
         except Reservation.DoesNotExist:
-            return JsonResponse(
-                {"ok": False, "message": "This reservation does not exist"}
-            )
+            return JsonResponse({"ok": False, "message": "This reservation does not exist"})
 
         if not self.can_edit(reservation):
-            return JsonResponse(
-                {"ok": False, "message": "You can only delete your own events"}
-            )
+            return JsonResponse({"ok": False, "message": "You can only delete your own events"})
 
         reservation.delete()
         return JsonResponse({"ok": True})
