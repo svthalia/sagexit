@@ -46,3 +46,9 @@ LOGGING = {
         },
     },
 }
+
+STATIC_ROOT = "/sagexit/static/"
+STATIC_URL = "/static/"
+
+MEDIA_ROOT = "/sagexit/media/"
+MEDIA_URL = "/media/"
