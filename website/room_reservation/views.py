@@ -65,16 +65,7 @@ class BaseReservationView(View):
 
     def can_edit(self, reservation):
         """Return true if the reservation can be edited by the logged in user."""
-        return (
-            self.request.user.has_perms(
-                [
-                    "room_reservation.change_reservation",
-                    "room_reservation.delete_reservation",
-                ],
-                reservation,
-            )
-            or self.request.user == reservation.reservee
-        )
+        return self.request.user == reservation.reservee
 
 
 class ShowCalendarView(TemplateView, BaseReservationView):
