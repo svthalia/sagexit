@@ -29,10 +29,15 @@
                         <i class="fas fa-calendar-alt"></i> Reservations
                     </a>
                 </li>
+                <li>
+                    <a href="https://github.com/svthalia/sagexit" target="_blank" class="nav-link">
+                        <i class="fab fa-github"></i> View on GitHub
+                    </a>
+                </li>
                 {% if request.user.is_staff %}
                     <li>
                         <a href="{% url "admin:index" %}" target="_self" class="nav-link">
-                            Go to admin
+                            <i class="fas fa-tools"></i> Go to admin
                         </a>
                     </li>
                 {% endif %}
@@ -44,7 +49,7 @@
                             <i class="fab fa-openid"></i> Login with Science OpenID
                         </a>
                     {% else %}
-                        <a class="nav-link" href="{%  url 'logout' %}?next={{ request.path | urlencode }}">You're logged in as {{ request.user }} - Logout</a>
+                        <a class="nav-link" href="{%  url 'logout' %}?next={{ request.path | urlencode }}">You're logged in as {{ request.user }} - Log out</a>
                     {% endif %}
                 </li>
             </ul>
