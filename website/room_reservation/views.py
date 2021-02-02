@@ -40,7 +40,7 @@ class BaseReservationView(View):
         if start_time.weekday() in (5, 6):
             return False, "Rooms cannot be reserved in the weekends"
 
-        already_taken = (
+        capacity_reached = (
             Reservation.objects.filter(room=room)
             .filter(
                 Q(start_time__lte=start_time, end_time__gt=start_time)
@@ -48,11 +48,12 @@ class BaseReservationView(View):
                 | Q(start_time__gte=start_time, end_time__lte=end_time)
             )
             .exclude(pk=pk)
-            .exists()
+            .count()
+            >= Room.objects.get(id=room).capacity
         )
 
-        if already_taken:
-            return False, "Room already reserved in this timeslot"
+        if capacity_reached:
+            return False, "Capacity is reached for this room"
         return True, None
 
     def load_json(self):
@@ -86,7 +87,7 @@ class ShowCalendarView(TemplateView, BaseReservationView):
             [
                 {
                     "pk": reservation.pk,
-                    "title": f"{reservation.room.name} ({reservation.reservee.get_full_name()})",
+                    "title": f"{reservation.reservee.get_full_name()} ({reservation.room.name})",
                     "reservee": reservation.reservee.get_full_name(),
                     "room": reservation.room_id,
                     "start": reservation.start_time.isoformat(),
