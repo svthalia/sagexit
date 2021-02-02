@@ -136,7 +136,7 @@ document.addEventListener('DOMContentLoaded', function() {
     minTime: '8:00',
     maxTime: '18:00',
     height: 'auto',
-    timeZone: 'Europe/Amsterdam',
+    timeZone: 'local',
     allDaySlot: false,
     nowIndicator: true,
     editable: false,
