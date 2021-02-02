@@ -7,6 +7,7 @@ class Room(models.Model):
 
     name = models.CharField(max_length=200)
     location = models.CharField(max_length=200)
+    capacity = models.SmallIntegerField(blank=False, null=False)
 
     def __str__(self):
         """Return small description about the room."""
