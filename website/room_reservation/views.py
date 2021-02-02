@@ -9,7 +9,7 @@ from django.utils import dateparse, timezone
 from django.views import View
 from django.views.generic import TemplateView
 
-from room_reservation.models import Reservation, Room
+from .models import Reservation, Room
 
 
 class BaseReservationView(View):
@@ -34,7 +34,7 @@ class BaseReservationView(View):
         if start_time >= end_time:
             return False, "Start time needs to be before end time"
 
-        if start_time.hour < 8 or start_time.hour >= 18 or end_time.hour < 8 or end_time.hour > 18:
+        if start_time.hour < 8 or start_time.hour >= 18 or end_time.hour < 8 or end_time.hour >= 18:
             return False, "Please enter times between 8:00 and 18:00"
 
         if start_time.weekday() in (5, 6):
@@ -119,6 +119,9 @@ class CreateReservationView(LoginRequiredMixin, BaseReservationView):
         if not ok:
             return JsonResponse({"ok": False, "message": message})
 
+        if start_time < timezone.now():
+            return JsonResponse({"ok": False, "message": "You cannot make reservations in the past"})
+
         reservation = Reservation.objects.create(
             reservee=request.user,
             room_id=room,
@@ -148,6 +151,27 @@ class UpdateReservationView(LoginRequiredMixin, BaseReservationView):
         if not self.can_edit(reservation):
             return JsonResponse({"ok": False, "message": "You can only update your own events"})
 
+        # If the event took place in the past
+        if reservation.start_time < reservation.end_time < timezone.now():
+            if reservation.start_time == start_time and end_time > timezone.now():  # We can only extend the end time
+                pass
+            else:
+                return JsonResponse({"ok": False, "message": "You cannot update events from the past"})
+
+        # If the event is active
+        if reservation.start_time < timezone.now() < reservation.end_time:
+            if (
+                reservation.start_time == start_time and end_time > timezone.now()
+            ):  # We can only change the end time to the future
+                pass
+            else:
+                return JsonResponse({"ok": False, "message": "You cannot change the start or end time to this value"})
+
+        # If the event is in the future
+        if timezone.now() < reservation.start_time < reservation.end_time:
+            if start_time < timezone.now():  # We cannot change the start time to the past
+                return JsonResponse({"ok": False, "message": "You cannot change the start time to this value"})
+
         ok, message = self.validate(room, start_time, end_time, pk=pk)
         if not ok:
             return JsonResponse({"ok": False, "message": message})
@@ -172,6 +196,12 @@ class DeleteReservationView(LoginRequiredMixin, BaseReservationView):
 
         if not self.can_edit(reservation):
             return JsonResponse({"ok": False, "message": "You can only delete your own events"})
+
+        if reservation.start_time < reservation.end_time < timezone.now():
+            return JsonResponse({"ok": False, "message": "You cannot remove events from the past"})
+
+        if reservation.start_time < timezone.now() < reservation.end_time:
+            return JsonResponse({"ok": False, "message": "You cannot remove this active event"})
 
         reservation.delete()
         return JsonResponse({"ok": True})
