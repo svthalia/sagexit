@@ -38,3 +38,7 @@ It features:
 2. `sudo systemctl enable docker`
 3. `sudo usermod -aG docker ubuntu`
 4. Run the deployment workflow
+
+
+
+NB: with either `apt` or `brew`, `xmlsec1` must also be installed manually!

@@ -45,7 +45,7 @@
             <ul class="navbar-nav my-2 my-lg-0">
                 <li class="nav-item">
                     {% if not request.user.is_authenticated %}
-                        <a href="{% url 'login' %}" class="nav-link">
+                        <a href="{% url 'admin:login' %}" class="nav-link">
                             <i class="fab fa-openid"></i> Login with Science OpenID
                         </a>
                     {% else %}

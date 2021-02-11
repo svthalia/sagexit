@@ -28,10 +28,23 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "sass_processor",
     "bootstrap4",
+    "django_saml2_auth",
     "sagexit",
     "users",
     "room_reservation",
 ]
+
+SAML2_AUTH = {
+    "METADATA_AUTO_CONF_URL": "https://conext.authenticatie.ru.nl/simplesaml/saml2/idp/metadata.php",
+    "ENTITY_ID": "https://reservations.thalia.nu/saml2_auth/acs/",
+    "ATTRIBUTES_MAP": {
+        "email": "ruMail",
+        "username": "uid",
+        "first_name": "givenName",
+        "last_name": "sn",
+    },
+}
+
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
