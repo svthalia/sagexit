@@ -28,95 +28,13 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "sass_processor",
     "bootstrap4",
-    "saml2_pro_auth",
+    "sp",
     "sagexit",
     "users",
     "room_reservation",
 ]
 
-AUTHENTICATION_BACKENDS = ["saml2_pro_auth.auth.Backend"]
-
-SAML_REDIRECT = "/"
-
-SAML_USERS_MAP = {"ruscience": {"email": dict(key="Email", index=0), "name": dict(key="Username", index=0)}}
-SAML_OVERRIDE_HOSTNAME = "reservations.thalia.nu"
-
-SAML_ROUTE = "/sso/saml/"
-
-SAML_PROVIDERS = {
-    "ruscience": {
-        "strict": False,
-        "debug": True,
-        "custom_base_path": "",  # Optional, set if you are reading files from a custom location on disk
-        "lowercase_urlencoding": False,  # This can be set to True to enable ADFS compatibility
-        "idp_initiated_auth": True,  # This can be set to False to disable IdP-initiated auth
-        "sp": {
-            "entityId": "https://reservations.thalia.nu/sso/saml/ruscience",
-            "assertionConsumerService": {
-                "url": "https://reservations.thalia.nu/sso/saml/ruscience/acs",
-                "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST",
-            },
-            "singleLogoutService": {
-                "url": "https://reservations.thalia.nu/sso/saml/ruscience/sls",
-                "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
-            },
-            "NameIDFormat": "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified",
-            ## For the cert/key you can place their content in
-            ## the x509cert and privateKey params
-            ## as single-line strings or place them in
-            ## certs/sp.key and certs/sp.crt or you can supply a
-            ## path via custom_base_path which should contain
-            ## sp.crt and sp.key
-            # "x509cert": "",
-            # "privateKey": "",
-        },
-        "idp": {
-            "entityId": "https://signon.science.ru.nl/simplesaml/saml2/idp/SSOService.php",
-            "singleSignOnService": {
-                "url": "https://signon.science.ru.nl/simplesaml/saml2/idp/SSOService.php",
-                "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
-            },
-            "singleLogoutService": {
-                "url": "https://signon.science.ru.nl/simplesaml/saml2/idp/SingleLogoutService.php",
-                "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect",
-            },
-            # "x509cert": open(os.path.join(BASE_DIR,'certs/MyProvider.crt'), 'r').read(),
-        },
-        "organization": {
-            "en-US": {"name": "example inc", "displayname": "Example Incorporated", "url": "example.com"}
-        },
-        "contactPerson": {
-            "technical": {"givenName": "Jane Doe", "emailAddress": "jdoe@examp.com"},
-            "support": {"givenName": "Jane Doe", "emailAddress": "jdoe@examp.com"},
-        },
-        "security": {
-            "nameIdEncrypted": False,
-            "authnRequestsSigned": False,
-            "logoutRequestSigned": False,
-            "logoutResponseSigned": False,
-            "signMetadata": False,
-            "wantMessagesSigned": False,
-            "wantAssertionsSigned": False,
-            "wantAssertionsEncrypted": False,
-            "wantNameId": False,
-            "wantNameIdEncrypted": False,
-            "wantAttributeStatement": False,
-            # Algorithm that the toolkit will use on signing process. Options:
-            #    'http://www.w3.org/2000/09/xmldsig#rsa-sha1'
-            #    'http://www.w3.org/2000/09/xmldsig#dsa-sha1'
-            #    'http://www.w3.org/2001/04/xmldsig-more#rsa-sha256'
-            #    'http://www.w3.org/2001/04/xmldsig-more#rsa-sha384'
-            #    'http://www.w3.org/2001/04/xmldsig-more#rsa-sha512'
-            "signatureAlgorithm": "http://www.w3.org/2001/04/xmldsig-more#rsa-sha256",
-            # Algorithm that the toolkit will use on digest process. Options:
-            #    'http://www.w3.org/2000/09/xmldsig#sha1'
-            #    'http://www.w3.org/2001/04/xmlenc#sha256'
-            #    'http://www.w3.org/2001/04/xmldsig-more#sha384'
-            #    'http://www.w3.org/2001/04/xmlenc#sha512'
-            "digestAlgorithm": "http://www.w3.org/2001/04/xmlenc#sha256",
-        },
-    }
-}
+AUTHENTICATION_BACKENDS = ["django.contrib.auth.backends.ModelBackend", "sp.backends.SAMLAuthenticationBackend"]
 
 
 MIDDLEWARE = [
