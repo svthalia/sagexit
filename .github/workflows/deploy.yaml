@@ -1,13 +1,10 @@
 ---
 
 name: "Deploy to production"
-on:
-  push:
-    branches:
-      - "master"
+on: "push"
 
 env:
-  DOCKER_IMAGE: "docker.pkg.github.com/${{ github.repository }}/sagexit-production:latest"
+  DOCKER_IMAGE: "docker.pkg.github.com/${{ github.repository }}/sagexit-production:test"
 
 jobs:
   build-docker:
