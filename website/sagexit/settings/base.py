@@ -30,7 +30,6 @@ INSTALLED_APPS = [
     "bootstrap4",
     "sp",
     "sagexit",
-    "users",
     "room_reservation",
 ]
 
@@ -60,6 +59,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "sagexit.context_processors.default_sso",
             ],
         },
     },
@@ -120,14 +120,6 @@ USE_L10N = True
 
 USE_TZ = True
 
+LOGIN_REDIRECT_URL = "/"
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.1/howto/static-files/
-
-
-LOGIN_URL = "/users/login"
-
-OPENID_RETURN_URL = "verify"
-OPENID_SERVER_ENDPOINT = "https://openid.science.ru.nl/openid-server"
-OPENID_USERNAME_PREFIX = "http://openid.science.ru.nl/"
-OPENID_USERNAME_POSTFIX = "/"
+# DEFAULT_SSO_SLUG = "science"

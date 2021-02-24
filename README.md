@@ -19,9 +19,6 @@ I hacked together a rather minimal application (though I would love to get rid o
 
 It features: 
 
-- a `users` app that hooks the built-in Django user model to OpenID (specifically the rather 
-  undocumented and outdated version of the Faculty of Science), which is a very stripped down version 
-  of the one of https://github.com/KiOui/TOSTI.
 - a `room_reservations` app that is a copy of the one on https://github.com/GipHouse/Website to 
   do the actual reservations (but with some minor changes)
 - the CI/CD is copied from https://github.com/GipHouse/Website as well. It requires these secrets:
@@ -31,14 +28,18 @@ It features:
   - `POSTGRES_PASSWORD`
   - `POSTGRES_NAME`
   - `DJANGO_SECRET_KEY`
-  - `DJANGO_OPENID_SUPERUSER_USERNAME`
-
+  
 # Set up server
 1. `sudo apt install docker-compose`
 2. `sudo systemctl enable docker`
 3. `sudo usermod -aG docker ubuntu`
 4. Run the deployment workflow
 
+User authentication happens via the CNCZ Science SAML signon server. This server needs to be set up
+manually after deployment from the Django admin. It is thus required to create a temporary superuser on
+the server, to actually do this. After setup and first login, the superuser permissions can be transferred
+to an actual account.
 
 
-NB: with either `apt` or `brew`, `xmlsec1` must also be installed manually!
+NB: for local development, with either `apt` or `brew`, `xmlsec1` must also be installed manually!
+

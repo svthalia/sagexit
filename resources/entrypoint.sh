@@ -17,13 +17,6 @@ cd /sagexit/src/website/
 ./manage.py collectstatic --no-input -v0 --ignore="*.scss"
 ./manage.py migrate --no-input
 
-cat << EOF | ./manage.py shell
-from django.contrib.auth import get_user_model
-User = get_user_model()
-if not User.objects.filter(username="${DJANGO_OPENID_SUPERUSER_USERNAME}").exists():
-  User.objects.create_superuser(username="${DJANGO_OPENID_SUPERUSER_USERNAME}")
-EOF
-
 chown --recursive www-data:www-data /sagexit/
 
 echo "Starting uwsgi server."
