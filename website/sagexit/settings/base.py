@@ -122,4 +122,4 @@ USE_TZ = True
 
 LOGIN_REDIRECT_URL = "/"
 
-# DEFAULT_SSO_SLUG = "science"
+DEFAULT_SSO_SLUG = "science"
