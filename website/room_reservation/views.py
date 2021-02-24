@@ -40,7 +40,7 @@ class BaseReservationView(View):
         if start_time.weekday() in (5, 6):
             return False, "Rooms cannot be reserved in the weekends"
 
-        capacity_reached = (
+        overlapping_reservations = (
             Reservation.objects.filter(room=room)
             .filter(
                 Q(start_time__lte=start_time, end_time__gt=start_time)
@@ -48,9 +48,27 @@ class BaseReservationView(View):
                 | Q(start_time__gte=start_time, end_time__lte=end_time)
             )
             .exclude(pk=pk)
-            .count()
-            >= Room.objects.get(id=room).capacity
         )
+
+        start_times = sorted(overlapping_reservations.values_list("start_time"))
+        end_times = sorted(overlapping_reservations.values_list("end_time"))
+
+        i = 1
+        j = 0
+
+        simultaneous = 1
+        max_overlapping = 1
+        while i < len(start_times) and j < len(start_times):
+            if start_times[i] <= end_times[j]:
+                simultaneous += 1
+                if simultaneous > max_overlapping:
+                    max_overlapping = simultaneous
+                i += 1
+            else:
+                simultaneous -= 1
+                j += 1
+
+        capacity_reached = max_overlapping >= Room.objects.get(id=room).capacity
 
         if capacity_reached:
             return False, "Capacity is reached for this room"
