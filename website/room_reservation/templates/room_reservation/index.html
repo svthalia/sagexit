@@ -12,7 +12,7 @@
         <div id="external-events-list" class="row {% if request.user.is_authenticated %}draggable{% endif %}">
             {% for room in rooms %}
                 {# The `draggable` attribute is used in calendar-init.js to make the rooms draggable. #}
-                <div class="fc-event col-2 {% if request.user.is_authenticated %}draggable{% endif %}" data-event='{ "title": "{{ room.name }}", "duration": "02:00", "editable": true, "extendedProps": { "room": {{ room.id }} } }'>{{ room }}</div>
+                <div class="fc-event col-2 {% if request.user.is_authenticated %}draggable{% endif %}" data-event='{ "title": "{{ room.name }}", "duration": "00:15", "editable": true, "extendedProps": { "room": {{ room.id }} } }'>{{ room }}</div>
             {% endfor %}
         </div>
     </div>
