@@ -45,11 +45,11 @@
             <ul class="navbar-nav my-2 my-lg-0">
                 <li class="nav-item">
                     {% if not request.user.is_authenticated %}
-                        <a href="{% url 'login' %}" class="nav-link">
-                            <i class="fab fa-openid"></i> Login with Science OpenID
+                        <a href="{{ DEFAULT_SSO.get_login_url }}" class="nav-link">
+                            <i class="fab fa-openid"></i> Login with Science
                         </a>
                     {% else %}
-                        <a class="nav-link" href="{%  url 'logout' %}?next={{ request.path | urlencode }}">You're logged in as {{ request.user }} - Log out</a>
+                        <a class="nav-link" href="{%  url 'admin:logout' %}?next={{ request.path | urlencode }}">You're logged in as {{ request.user }} - Log out</a>
                     {% endif %}
                 </li>
             </ul>
