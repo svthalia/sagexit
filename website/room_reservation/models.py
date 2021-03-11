@@ -6,12 +6,11 @@ class Room(models.Model):
     """Model for a Room that can be reserved."""
 
     name = models.CharField(max_length=200)
-    location = models.CharField(max_length=200)
     capacity = models.SmallIntegerField(blank=False, null=False)
 
     def __str__(self):
         """Return small description about the room."""
-        return f"{self.name} ({self.location})"
+        return f"{self.name} (max. {self.capacity}p)"
 
 
 class Reservation(models.Model):

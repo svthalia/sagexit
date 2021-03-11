@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from room_reservation.models import Reservation, Room
+from .models import Reservation, Room
 
 
 @admin.register(Reservation)
@@ -15,4 +15,4 @@ class ReservationAdmin(admin.ModelAdmin):
 class RoomAdmin(admin.ModelAdmin):
     """Admin class for Room."""
 
-    list_display = ("name", "location")
+    list_display = ("name",)
