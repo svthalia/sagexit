@@ -28,6 +28,9 @@ class BaseReservationView(View):
         start_time = start_time.astimezone(timezone.get_current_timezone())
         end_time = end_time.astimezone(timezone.get_current_timezone())
 
+        if end_time.date() > timezone.now().date() + timezone.timedelta(weeks=1):
+            return False, "You can only make reservation 1 week in advance"
+
         if end_time.date() - start_time.date() >= timezone.timedelta(days=1):
             return False, "Reservation too long. Please shorten your reservation"
 
