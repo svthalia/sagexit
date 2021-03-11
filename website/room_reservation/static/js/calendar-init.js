@@ -111,7 +111,7 @@ document.addEventListener('DOMContentLoaded', function() {
     plugins: [ 'dayGrid', 'timeGrid', 'bootstrap', 'interaction' ],
     themeSystem: 'bootstrap',
     header: {
-      right: 'timeGridDay,timeGridWeek,dayGridMonth today,prev,next',
+      right: 'timeGridDay,dayGridWeek today,prev,next',
     },
     initialView: 'timeGridDay',
     defaultView: 'timeGridDay',
@@ -135,12 +135,13 @@ document.addEventListener('DOMContentLoaded', function() {
     eventLimit: true,
     minTime: '8:00',
     maxTime: '18:00',
-    height: 'auto',
+    height: 800,
     timeZone: 'local',
     allDaySlot: false,
     nowIndicator: true,
     editable: false,
     droppable: true,
+    displayEventEnd: true,
     eventReceive: async function({event}) {
       const message = await addEvent(event);
       if (!message.ok) {

@@ -17,7 +17,7 @@
 /* a "rigid" row will take up a constant amount of height because content-skeleton is absolute */
 
 .fc-row.fc-rigid {
-  overflow: hidden;
+  overflow: auto;
 }
 
 .fc-row.fc-rigid .fc-content-skeleton {
