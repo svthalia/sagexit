@@ -15,7 +15,7 @@ from .models import Reservation, Room
 class BaseReservationView(View):
     """Base class for reservation API endpoints."""
 
-    def validate(self, room, start_time, end_time, pk=None):
+    def validate(self, room, start_time, end_time, pk=None, user=None):
         """
         Validate the input for the reservation.
 
@@ -42,6 +42,19 @@ class BaseReservationView(View):
 
         if start_time.weekday() in (5, 6):
             return False, "Rooms cannot be reserved in the weekends"
+
+        overlapping_same_user = (
+            Reservation.objects.filter(reservee=user)
+            .filter(
+                Q(start_time__lte=start_time, end_time__gt=start_time)
+                | Q(start_time__lt=end_time, end_time__gte=end_time)
+                | Q(start_time__gte=start_time, end_time__lte=end_time)
+            )
+            .exclude(pk=pk)
+        )
+
+        if overlapping_same_user.count() >= 1:
+            return False, "You cannot reserve multiple rooms"
 
         overlapping_reservations = (
             Reservation.objects.filter(room=room)
@@ -137,7 +150,7 @@ class CreateReservationView(LoginRequiredMixin, BaseReservationView):
         except (KeyError, JSONDecodeError):
             return HttpResponseBadRequest(json.dumps({"ok": "False", "message": "Bad request"}))
 
-        ok, message = self.validate(room, start_time, end_time)
+        ok, message = self.validate(room, start_time, end_time, user=self.request.user)
         if not ok:
             return JsonResponse({"ok": False, "message": message})
 
@@ -194,7 +207,7 @@ class UpdateReservationView(LoginRequiredMixin, BaseReservationView):
             if start_time < timezone.now():  # We cannot change the start time to the past
                 return JsonResponse({"ok": False, "message": "You cannot change the start time to this value"})
 
-        ok, message = self.validate(room, start_time, end_time, pk=pk)
+        ok, message = self.validate(room, start_time, end_time, pk=pk, user=self.request.user)
         if not ok:
             return JsonResponse({"ok": False, "message": message})
 
