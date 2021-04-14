@@ -66,6 +66,9 @@ class BaseReservationView(View):
             .exclude(pk=pk)
         )
 
+        if overlapping_reservations.filter(block_whole_room=True).exists():
+            return False, "This room is blocked."
+
         start_times = sorted(overlapping_reservations.values_list("start_time"))
         end_times = sorted(overlapping_reservations.values_list("end_time"))
 
@@ -121,7 +124,9 @@ class ShowCalendarView(TemplateView, BaseReservationView):
             [
                 {
                     "pk": reservation.pk,
-                    "title": f"{reservation.reservee.get_full_name()} ({reservation.room.name})",
+                    "title": f"{reservation.reservee.get_full_name()} ({reservation.room.name})"
+                    if not reservation.block_whole_room
+                    else f"{reservation.room.name} BLOCKED",
                     "reservee": reservation.reservee.get_full_name(),
                     "room": reservation.room_id,
                     "start": reservation.start_time.isoformat(),

@@ -20,6 +20,7 @@ class Reservation(models.Model):
     room = models.ForeignKey(Room, on_delete=models.CASCADE)
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
+    block_whole_room = models.BooleanField(null=False, blank=False, default=False)
 
     def __str__(self):
         """Return small description about the reservation."""
