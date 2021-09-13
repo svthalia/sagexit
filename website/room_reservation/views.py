@@ -78,7 +78,7 @@ class BaseReservationView(View):
         simultaneous = 1
         max_overlapping = 1
         while i < len(start_times) and j < len(start_times):
-            if start_times[i] <= end_times[j]:
+            if start_times[i] < end_times[j]:
                 simultaneous += 1
                 if simultaneous > max_overlapping:
                     max_overlapping = simultaneous
