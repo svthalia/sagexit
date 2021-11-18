@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - "master"
+  workflow_dispatch:
 
 env:
   DOCKER_IMAGE: "docker.pkg.github.com/${{ github.repository }}/sagexit-production:latest"
