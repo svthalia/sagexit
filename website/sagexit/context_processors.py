@@ -8,3 +8,5 @@ def default_sso(request):
         return {"DEFAULT_SSO": IdP.objects.get(slug=settings.DEFAULT_SSO_SLUG)}
     except AttributeError:
         return {"DEFAULT_SSO": IdP.objects.filter(is_active=True).first()}
+    except:
+        return {}
