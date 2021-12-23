@@ -12,6 +12,15 @@
   padding: 10px 8px;
 }
 
+#filter-rooms {
+  margin: 10px 0;
+}
+
+#filter-rooms > label {
+  padding-right: 10px;
+  margin-bottom: 0;
+}
+
 #notifications {
   position: absolute;
   z-index: 100;
