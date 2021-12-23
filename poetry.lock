@@ -517,7 +517,7 @@ python-versions = "*"
 
 [[package]]
 name = "xmlsec"
-version = "1.3.12"
+version = "1.3.9"
 description = "Python bindings for the XML Security Library"
 category = "main"
 optional = false

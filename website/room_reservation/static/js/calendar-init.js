@@ -74,13 +74,9 @@ async function addEvent(event) {
 }
 
 function filterEvents(json) {
-    if (roomFilterSelection !== -1) {
-        json = json.filter(function (n, _i) {
-            return n.room === roomFilterSelection;
-        })
+    for(let i in json){
+        json[i].setProp('classNames', ((json[i].extendedProps.room === roomFilterSelection) || (roomFilterSelection === -1)) ? ['visible'] : ['hidden']);
     }
-
-    return json;
 }
 
 async function changeEvent(info) {
@@ -124,8 +120,6 @@ document.addEventListener('DOMContentLoaded', function () {
             itemSelector: '.fc-event.draggable',
         });
     }
-    const origData = JSON.parse(document.getElementById('calendar').getAttribute('data-events'));
-    let calenderData = origData;
     const calendar = new FullCalendar.Calendar(calendarEl, {
         plugins: ['dayGrid', 'timeGrid', 'bootstrap', 'interaction'],
         themeSystem: 'bootstrap',
@@ -161,6 +155,7 @@ document.addEventListener('DOMContentLoaded', function () {
         editable: false,
         droppable: true,
         displayEventEnd: true,
+        display: 'auto',
         eventReceive: async function ({event}) {
             console.log(event)
             const message = await addEvent(event);
@@ -218,13 +213,12 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         eventDrop: changeEvent,
         eventResize: changeEvent,
-        events: function (info, successCallback, failureCallback) {
-            successCallback(calenderData);
-        },
+        events: JSON.parse(document.getElementById('calendar').getAttribute('data-events'))
     });
 
     const roomFilter = document.getElementById("room-filter");
     if (roomFilter !== null) {
+
         // Reset on page update
         roomFilter.value = -1;
 
@@ -232,8 +226,8 @@ document.addEventListener('DOMContentLoaded', function () {
             let res = parseInt(roomFilter.value);
             if (res !== roomFilterSelection) {
                 roomFilterSelection = res;
-                calenderData = filterEvents(origData);
-                calendar.refetchEvents();
+                let events = calendar.getEvents();
+                filterEvents(events);
             }
         }
     }
