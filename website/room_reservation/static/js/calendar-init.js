@@ -74,7 +74,7 @@ async function addEvent(event) {
 }
 
 function filterEvents(json) {
-    for(let i in json){
+    for (let i in json) {
         json[i].setProp('classNames', ((json[i].extendedProps.room === roomFilterSelection) || (roomFilterSelection === -1)) ? ['visible'] : ['hidden']);
     }
 }
@@ -228,6 +228,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 roomFilterSelection = res;
                 let events = calendar.getEvents();
                 filterEvents(events);
+
+                for (let i of containerEl.children) {
+                    i.className = (
+                        (JSON.parse(i.attributes.getNamedItem("data-event").value).extendedProps.room !== roomFilterSelection)
+                        && roomFilterSelection !== -1) ?
+                        i.className.replace("draggable", "")
+                        :
+                        (i.className.indexOf("draggable") !== -1 ? i.className : i.className += "draggable")
+                }
+
             }
         }
     }

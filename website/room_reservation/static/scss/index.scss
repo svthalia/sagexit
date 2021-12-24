@@ -17,7 +17,9 @@
 }
 
 #filter-rooms > label {
-  padding-right: 10px;
+  padding-right: 0;
+  padding-left: 0;
+
   margin-bottom: 0;
 }
 
@@ -40,6 +42,7 @@
     margin-bottom: 5px;
     transition: .3s;
     overflow: auto;
+
     p {
       float: left;
       margin-bottom: 0;
@@ -47,18 +50,20 @@
       @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-line-height, $btn-border-radius);
     }
   }
+
   .notification-collapsed {
     height: 0;
   }
+
   .notification:hover {
     background: rgba($primary, 1);
   }
 }
 
-.hidden{
+.hidden {
   display: none;
 }
 
-.visible{
+.visible {
   display: block;
 }
