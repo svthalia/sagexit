@@ -4,15 +4,13 @@
 {% block content %}
     <h2>Mercator reservations</h2>
     <div id="notifications">
-        {# This is where calendar-init.js will place notifications for deleted events. #}
+    {# This is where calendar-init.js will place notifications for deleted events. #}
     </div>
 
     <div id="external-events">
-        <p>If you are logged in, you can <strong>drag a room to the calendar</strong> to make a reservation and click
-            your events to remove them.</p>
+        <p>If you are logged in, you can <strong>drag a room to the calendar</strong> to make a reservation and click your events to remove them.</p>
 
-        <p>You can make reservations at most 1 week in advance. Without a reservation, you <strong>cannot</strong> come
-            to Mercator.<br>
+        <p>You can make reservations at most 1 week in advance. Without a reservation, you <strong>cannot</strong> come to Mercator.<br>
             Please only make a reservation for a place to <strong>study</strong>.
         </p>
 
@@ -22,18 +20,8 @@
         <div id="external-events-list" class="row {% if request.user.is_authenticated %}draggable{% endif %}">
             {% for room in rooms %}
                 {# The `draggable` attribute is used in calendar-init.js to make the rooms draggable. #}
-                <div class="fc-event col-2 {% if request.user.is_authenticated %}draggable{% endif %}"
-                     data-event='{ "title": "{{ room.name }}", "duration": "00:15", "editable": true, "extendedProps": { "room": {{ room.id }} } }'>{{ room }}</div>
+                <div class="fc-event col-2 {% if request.user.is_authenticated %}draggable{% endif %}" data-event='{ "title": "{{ room.name }}", "duration": "00:15", "editable": true, "extendedProps": { "room": {{ room.id }} } }'>{{ room }}</div>
             {% endfor %}
-        </div>
-        <div id="filter-rooms" class="row w-25">
-            <label for="room-filter" class="col-md">Filter rooms:</label>
-            <select name="room-filter" class="custom-select custom-select-sm col-md" id="room-filter" aria-label="Default select example">
-                <option value="-1">All rooms</option>
-                {% for room in rooms %}
-                    <option value={{ room.id }}> {{ room }}</option>
-                {% endfor %}
-            </select>
         </div>
     </div>
 

@@ -12,17 +12,6 @@
   padding: 10px 8px;
 }
 
-#filter-rooms {
-  margin: 10px 0;
-}
-
-#filter-rooms > label {
-  padding-right: 0;
-  padding-left: 0;
-
-  margin-bottom: 0;
-}
-
 #notifications {
   position: absolute;
   z-index: 100;
@@ -42,7 +31,6 @@
     margin-bottom: 5px;
     transition: .3s;
     overflow: auto;
-
     p {
       float: left;
       margin-bottom: 0;
@@ -50,20 +38,10 @@
       @include button-size($btn-padding-y, $btn-padding-x, $btn-font-size, $btn-line-height, $btn-border-radius);
     }
   }
-
   .notification-collapsed {
     height: 0;
   }
-
   .notification:hover {
     background: rgba($primary, 1);
   }
-}
-
-.hidden {
-  display: none;
-}
-
-.visible {
-  display: block;
 }
