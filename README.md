@@ -43,3 +43,15 @@ to an actual account.
 
 NB: for local development, with either `apt` or `brew`, `xmlsec1` must also be installed manually!
 
+# Set up local development
+
+clone the repo
+
+1. `cd website`
+2. `poetry shell` 
+3. `poetry install`
+   (if any errors come up here you can try to install it yourself with pip install XX)
+4. `python manage.py migrate`
+5. `python manage.py compilescss`
+6. `python manage.py python manage.py collectstatic --no-input -v0 --ignore="*.scss"`
+7. `python manage.py runserver`
